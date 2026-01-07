@@ -1,60 +1,13 @@
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
-import { getTodos, postTodo } from "../my-api";
+import { useQueryClient } from "@tanstack/react-query";
 
-// Create a client
-const queryClient = new QueryClient();
-
-function App() {
-  return (
-    // Provide the client to your App
-    <QueryClientProvider client={queryClient}>
-      <Todos />
-    </QueryClientProvider>
-  );
-}
-
-function Todos() {
-  // Access the client
-  const queryClient = useQueryClient();
-
-  // Queries
-  const query = useQuery({ queryKey: ["todos"], queryFn: getTodos });
-
-  // Mutations
-  const mutation = useMutation({
-    mutationFn: postTodo,
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
-    },
-  });
+export default function App() {
+  const client = useQueryClient();
+  console.log(client);
 
   return (
-    <div>
-      <ul>
-        {query.data?.map((todo) => (
-          <li key={todo.id}>{todo.title}</li>
-        ))}
-      </ul>
-
-      <button
-        onClick={() => {
-          mutation.mutate({
-            id: Date.now(),
-            title: "Do Laundry",
-          });
-        }}
-      >
-        Add Todo
-      </button>
+    <div className="border h-screen">
+      <h1 className="text-3xl font-black text-center">TanStack Query</h1>
+      <div></div>
     </div>
   );
 }
-
-render(<App />, document.getElementById("root"));
