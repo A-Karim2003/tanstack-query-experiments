@@ -11,11 +11,28 @@ export default function App() {
   const queryClient = useQueryClient();
 
   const deleteTodoMutation = useMutation({
-    mutationFn: deleteTodo,
+    mutationFn: (id) => deleteTodo(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todo"] });
     },
-    onError: (error) => {
+
+    onMutate: async (deletedId) => {
+      // cancel ongoing fetches that can interfere with cache
+      await queryClient.cancelQueries({ queryKey: ["todo"] });
+
+      // save oldTodos just incase new fetch failss
+      const oldTodos = queryClient.getQueryData(["todo"]);
+
+      // mutate cached data
+      queryClient.setQueryData(["todo"], (old) =>
+        old.filter((todo) => todo.id !== deletedId)
+      );
+
+      return { oldTodos };
+    },
+
+    onError: (error, deletedId, context) => {
+      queryClient.setQueryData(["todo"], context.oldTodos);
       console.error(error);
     },
   });

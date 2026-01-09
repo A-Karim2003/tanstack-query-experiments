@@ -8,7 +8,7 @@ export default function TodoForm() {
   const queryClient = useQueryClient();
 
   const addTodoMutation = useMutation({
-    mutationFn: addTodo,
+    mutationFn: (newTodo) => addTodo(newTodo),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todo"] });
       setTask("");

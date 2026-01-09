@@ -21,13 +21,9 @@ export async function addTodo(newTodo) {
 }
 
 export async function deleteTodo(id) {
-  console.log(id);
-
   const res = await fetch(`http://localhost:9000/todos/${id}`, {
     method: "DELETE",
   });
-
-  console.log(res);
 
   if (!res.ok) throw new Error("Failed to Delete");
 
