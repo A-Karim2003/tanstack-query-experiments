@@ -7,7 +7,7 @@ export default function TodoForm() {
   const [priority, setPriority] = useState("Medium");
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
+  const addTodoMutation = useMutation({
     mutationFn: addTodo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todo"] });
@@ -31,7 +31,7 @@ export default function TodoForm() {
       completed: false,
     };
 
-    mutation.mutate(newTodo);
+    addTodoMutation.mutate(newTodo);
   }
 
   return (

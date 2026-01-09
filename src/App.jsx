@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { fetchTodo } from "./services/todoAPI";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteTodo, fetchTodo } from "./services/todoAPI";
 import TodoForm from "./TodoForm";
 
 export default function App() {
@@ -7,6 +7,23 @@ export default function App() {
     queryKey: ["todo"],
     queryFn: fetchTodo,
   });
+
+  const queryClient = useQueryClient();
+
+  const deleteTodoMutation = useMutation({
+    mutationFn: deleteTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todo"] });
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  function handleDelete(id) {
+    if (!id) return;
+    deleteTodoMutation.mutate(id);
+  }
 
   if (isPending)
     return <h1 className="text-center text-2xl mt-20">Loading...</h1>;
@@ -29,7 +46,7 @@ export default function App() {
         {data.map((todo) => (
           <div
             key={todo.id}
-            className={`p-6 rounded-xl shadow-md border-l-4 transition-all
+            className={`relative p-6 rounded-xl shadow-md border-l-4 transition-all
               ${
                 todo.priority === "High"
                   ? "border-red-500 bg-red-50"
@@ -39,6 +56,13 @@ export default function App() {
               }
               ${todo.completed ? "opacity-75" : ""}`}
           >
+            <button
+              className="absolute top-1 right-1 size-6 bg-red-400 rounded-full text-gray-100 cursor-pointer"
+              onClick={() => handleDelete(todo.id)}
+              disabled={deleteTodoMutation.isPending}
+            >
+              {deleteTodoMutation.isPending ? "..." : "X"}
+            </button>
             <div className="flex justify-between items-start mb-3">
               <h3
                 className={`font-semibold text-lg ${

@@ -1,7 +1,7 @@
 {
   "todos": [
     {
-      "id": 1,
+      "id": "1",
       "task": "Finalize monthly budget spreadsheet",
       "due_date": "2026-01-10",
       "priority": "High",
@@ -9,7 +9,7 @@
       "completed": false
     },
     {
-      "id": 2,
+      "id": "2",
       "task": "Book annual dental checkup",
       "due_date": "2026-01-15",
       "priority": "Medium",
@@ -17,7 +17,7 @@
       "completed": true
     },
     {
-      "id": 3,
+      "id": "3",
       "task": "Renew gym membership",
       "due_date": "2026-01-08",
       "priority": "Low",
@@ -25,7 +25,7 @@
       "completed": false
     },
     {
-      "id": 4,
+      "id": "4",
       "task": "Update portfolio website project section",
       "due_date": "2026-01-20",
       "priority": "High",
@@ -33,7 +33,7 @@
       "completed": false
     },
     {
-      "id": 5,
+      "id": "5",
       "task": "Buy groceries for meal prep",
       "due_date": "2026-01-09",
       "priority": "Medium",
@@ -41,7 +41,7 @@
       "completed": false
     },
     {
-      "id": 6,
+      "id": "6",
       "task": "Research flights for summer vacation",
       "due_date": "2026-02-01",
       "priority": "Low",
@@ -49,19 +49,11 @@
       "completed": false
     },
     {
-      "id": 7,
+      "id": "7",
       "task": "Submit quarterly tax documents",
       "due_date": "2026-01-12",
       "priority": "High",
       "category": "Finance",
-      "completed": false
-    },
-    {
-      "id": "8daa",
-      "task": "Todo Test",
-      "due_date": "2026-01-08T17:59:04.819Z",
-      "priority": "Medium",
-      "category": "Generals",
       "completed": false
     }
   ]
