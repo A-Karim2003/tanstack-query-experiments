@@ -1,10 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteTodo, fetchTodo } from "./services/todoAPI";
 import TodoForm from "./TodoForm";
+import TableContainer from "./table/TableContainer";
 
 export default function App() {
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ["todo"],
+    queryKey: ["todos"],
     queryFn: fetchTodo,
   });
 
@@ -13,18 +14,18 @@ export default function App() {
   const deleteTodoMutation = useMutation({
     mutationFn: (id) => deleteTodo(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todo"] });
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
 
     onMutate: async (deletedId) => {
       // cancel ongoing fetches that can interfere with cache
-      await queryClient.cancelQueries({ queryKey: ["todo"] });
+      await queryClient.cancelQueries({ queryKey: ["todos"] });
 
       // save oldTodos just incase new fetch failss
-      const oldTodos = queryClient.getQueryData(["todo"]);
+      const oldTodos = queryClient.getQueryData(["todos"]);
 
       // mutate cached data
-      queryClient.setQueryData(["todo"], (old) =>
+      queryClient.setQueryData(["todos"], (old) =>
         old.filter((todo) => todo.id !== deletedId)
       );
 
@@ -32,7 +33,7 @@ export default function App() {
     },
 
     onError: (error, deletedId, context) => {
-      queryClient.setQueryData(["todo"], context.oldTodos);
+      queryClient.setQueryData(["todos"], context.oldTodos);
       console.error(error);
     },
   });
@@ -131,6 +132,8 @@ export default function App() {
           </div>
         ))}
       </div>
+
+      <TableContainer />
     </div>
   );
 }
