@@ -33,6 +33,7 @@ export default function App() {
     },
 
     onError: (error, deletedId, context) => {
+      // context has access to pre-modified cache data
       queryClient.setQueryData(["todos"], context.oldTodos);
       console.error(error);
     },
@@ -132,7 +133,6 @@ export default function App() {
           </div>
         ))}
       </div>
-
       <TableContainer />
     </div>
   );

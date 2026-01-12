@@ -17,7 +17,7 @@ import { fetchTodo } from "../services/todoAPI";
 import { ClipboardList } from "lucide-react";
 import { useState } from "react";
 
-const columnHelper = createColumnHelper("id");
+const columnHelper = createColumnHelper();
 
 export default function TableContainer() {
   const [sorting, setSorting] = useState([]);
@@ -34,6 +34,8 @@ export default function TableContainer() {
   console.log(sorting);
 
   //? Define columns
+  /* columns array is used for defining the columns for the table. Each object in the array represents a column.
+   */
   const columns = [
     columnHelper.accessor("task", {
       header: () => (
@@ -77,6 +79,13 @@ export default function TableContainer() {
         </span>
       ),
       cell: (info) => info.getValue(),
+      sortingFn: (rowA, rowB) => {
+        const rowACategory = rowA.original.category;
+        const rowBCategory = rowB.original.category;
+        console.log(rowACategory, rowBCategory);
+
+        return rowACategory - rowBCategory;
+      },
     }),
 
     columnHelper.accessor("completed", {
@@ -101,10 +110,10 @@ export default function TableContainer() {
   const table = useReactTable({
     data: todos,
     columns,
-    state: { sorting }, // sorting state
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(), // processes raw data into rows that the table can use.
+    getSortedRowModel: getSortedRowModel(), // sorts rows based on `sorting` state
+    state: { sorting }, // stores which column to sort by
+    onSortingChange: setSorting, //
   });
 
   if (isPending) return <div>Loading...</div>;
@@ -127,6 +136,7 @@ export default function TableContainer() {
           </option>
           <option value="due_date">Due Date</option>
           <option value="priority">Priority</option>
+          <option value="category">Category</option>
         </select>
       </div>
       <table className="min-w-full border-collapse text-sm">
