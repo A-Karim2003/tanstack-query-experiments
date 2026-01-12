@@ -3,6 +3,7 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -14,10 +15,13 @@ import {
 import { fetchTodo } from "../services/todoAPI";
 
 import { ClipboardList } from "lucide-react";
+import { useState } from "react";
 
 const columnHelper = createColumnHelper("id");
 
 export default function TableContainer() {
+  const [sorting, setSorting] = useState([]);
+
   const {
     data: todos = [],
     isPending,
@@ -26,6 +30,8 @@ export default function TableContainer() {
     queryKey: ["todos"],
     queryFn: fetchTodo,
   });
+
+  console.log(sorting);
 
   //? Define columns
   const columns = [
@@ -45,6 +51,7 @@ export default function TableContainer() {
         </span>
       ),
       cell: (info) => info.getValue(),
+      sortingFn: "datetime",
     }),
 
     columnHelper.accessor("priority", {
@@ -53,7 +60,14 @@ export default function TableContainer() {
           <CircleAlert /> Priority
         </span>
       ),
-      cell: (info) => info.value,
+      cell: (info) => info.getValue(),
+      sortingFn: (rowA, rowB) => {
+        const priorityOrder = { Low: 1, Medium: 2, High: 3 };
+        const a = priorityOrder[rowA.original.priority] || 0;
+        const b = priorityOrder[rowB.original.priority] || 0;
+
+        return a - b;
+      },
     }),
 
     columnHelper.accessor("category", {
@@ -75,12 +89,22 @@ export default function TableContainer() {
     }),
   ];
 
-  //? Create table instant
+  function handleSorting(e) {
+    const value = e.target.value;
+    if (!value) return setSorting([]);
 
+    setSorting([{ id: value, desc: false }]);
+  }
+
+  //? Create table instant
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: todos,
     columns,
+    state: { sorting }, // sorting state
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
   });
 
   if (isPending) return <div>Loading...</div>;
@@ -88,6 +112,23 @@ export default function TableContainer() {
 
   return (
     <div className="max-w-300 w-full m-auto mt-10">
+      <div className="flex justify-between p-2">
+        <div>
+          <input type="text" />
+        </div>
+
+        <select
+          className="shadow-md p-2 rounded-lg focus:outline-0"
+          value={sorting[0]?.id || ""}
+          onChange={handleSorting}
+        >
+          <option value="" disabled>
+            Sort by
+          </option>
+          <option value="due_date">Due Date</option>
+          <option value="priority">Priority</option>
+        </select>
+      </div>
       <table className="min-w-full border-collapse text-sm">
         <thead className="bg-gray-100 text-left border-b">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -105,7 +146,7 @@ export default function TableContainer() {
         </thead>
 
         <tbody className="divide-y divide-gray-200">
-          {table.getRowModel().rows.map((row, i) => {
+          {table.getRowModel().rows.map((row) => {
             const priority = row.original.priority;
 
             const priorityClass =
