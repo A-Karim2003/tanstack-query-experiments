@@ -26,7 +26,7 @@ export default function TableContainer() {
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 2,
+    pageSize: 5,
   });
 
   const {
@@ -199,12 +199,6 @@ export default function TableContainer() {
         </tbody>
       </table>
       <div className="flex items-center justify-between py-4">
-        <div className="">
-          <div>
-            Showing <b>{pagination.pageIndex + 1}</b> to <b>10</b> of{" "}
-            <b>{todos.length}</b> results
-          </div>
-        </div>
         <div className="flex items-center gap-2 mt-4">
           {/* First Page Button */}
           <button
@@ -253,8 +247,15 @@ export default function TableContainer() {
 
           {/* Page Size Selector */}
           <select
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => table.setPageSize(Number(e.target.value))}
+            onChange={(e) => {
+              if (e.target.value === "all") table.setPageSize(todos.length);
+              else table.setPageSize(Number(e.target.value));
+            }}
+            value={
+              table.getState().pagination.pageSize === todos.length
+                ? "all"
+                : table.getState().pagination.pageSize
+            }
             className="border p-1 rounded"
           >
             {[5, 10, 20].map((pageSize) => (
@@ -262,6 +263,8 @@ export default function TableContainer() {
                 Show {pageSize}
               </option>
             ))}
+
+            <option value="all">Show all</option>
           </select>
         </div>
       </div>
