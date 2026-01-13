@@ -3,6 +3,8 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -21,6 +23,11 @@ const columnHelper = createColumnHelper();
 
 export default function TableContainer() {
   const [sorting, setSorting] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 2,
+  });
 
   const {
     data: todos = [],
@@ -30,8 +37,6 @@ export default function TableContainer() {
     queryKey: ["todos"],
     queryFn: fetchTodo,
   });
-
-  console.log(sorting);
 
   //? Define columns
   /* columns array is used for defining the columns for the table. Each object in the array represents a column.
@@ -82,9 +87,8 @@ export default function TableContainer() {
       sortingFn: (rowA, rowB) => {
         const rowACategory = rowA.original.category;
         const rowBCategory = rowB.original.category;
-        console.log(rowACategory, rowBCategory);
 
-        return rowACategory - rowBCategory;
+        return rowACategory.localeCompare(rowBCategory);
       },
     }),
 
@@ -105,15 +109,27 @@ export default function TableContainer() {
     setSorting([{ id: value, desc: false }]);
   }
 
+  function handleFiltering(e) {
+    const value = e.target.value;
+    table.setGlobalFilter(value);
+  }
+
   //? Create table instant
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: todos,
     columns,
+    state: { sorting, globalFilter, pagination }, // Describes how data is manipulated
+
     getCoreRowModel: getCoreRowModel(), // processes raw data into rows that the table can use.
     getSortedRowModel: getSortedRowModel(), // sorts rows based on `sorting` state
-    state: { sorting }, // stores which column to sort by
-    onSortingChange: setSorting, //
+    getFilteredRowModel: getFilteredRowModel(), // needed for client-side global filtering
+    getPaginationRowModel: getPaginationRowModel(),
+
+    globalFilterFn: "includesString",
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setGlobalFilter,
+    onPaginationChange: setPagination,
   });
 
   if (isPending) return <div>Loading...</div>;
@@ -123,9 +139,14 @@ export default function TableContainer() {
     <div className="max-w-300 w-full m-auto mt-10">
       <div className="flex justify-between p-2">
         <div>
-          <input type="text" />
+          <input
+            type="text"
+            placeholder="Search..."
+            className="border border-slate-200 shadow-md shadow-amber-200 rounded-lg w-100 p-2"
+            value={globalFilter ?? ""}
+            onChange={handleFiltering}
+          />
         </div>
-
         <select
           className="shadow-md p-2 rounded-lg focus:outline-0"
           value={sorting[0]?.id || ""}
@@ -177,6 +198,73 @@ export default function TableContainer() {
           })}
         </tbody>
       </table>
+      <div className="flex items-center justify-between py-4">
+        <div className="">
+          <div>
+            Showing <b>{pagination.pageIndex + 1}</b> to <b>10</b> of{" "}
+            <b>{todos.length}</b> results
+          </div>
+        </div>
+        <div className="flex items-center gap-2 mt-4">
+          {/* First Page Button */}
+          <button
+            onClick={() => table.firstPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="px-2 py-1 border rounded disabled:opacity-50"
+          >
+            {"<<"}
+          </button>
+
+          {/* Previous Page Button */}
+          <button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="px-2 py-1 border rounded disabled:opacity-50"
+          >
+            {"<"}
+          </button>
+
+          {/* Next Page Button */}
+          <button
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="px-2 py-1 border rounded disabled:opacity-50"
+          >
+            {">"}
+          </button>
+
+          {/* Last Page Button */}
+          <button
+            onClick={() => table.lastPage()}
+            disabled={!table.getCanNextPage()}
+            className="px-2 py-1 border rounded disabled:opacity-50"
+          >
+            {">>"}
+          </button>
+
+          {/* Page Info */}
+          <span className="flex items-center gap-1">
+            <div>Page</div>
+            <strong>
+              {table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount()}
+            </strong>
+          </span>
+
+          {/* Page Size Selector */}
+          <select
+            value={table.getState().pagination.pageSize}
+            onChange={(e) => table.setPageSize(Number(e.target.value))}
+            className="border p-1 rounded"
+          >
+            {[5, 10, 20].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
     </div>
   );
 }

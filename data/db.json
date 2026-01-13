@@ -57,11 +57,187 @@
       "completed": false
     },
     {
-      "id": "0572",
+      "id": "b6dd",
       "task": "Inspect pull request",
-      "due_date": "2026-01-12T17:20:13.536Z",
+      "due_date": "2026-01-12",
       "priority": "Medium",
       "category": "Generals",
+      "completed": false
+    },
+    {
+      "id": "8",
+      "task": "Schedule oil change for car",
+      "due_date": "2026-01-18",
+      "priority": "Medium",
+      "category": "Maintenance",
+      "completed": false
+    },
+    {
+      "id": "9",
+      "task": "Prepare presentation for Monday sync",
+      "due_date": "2026-01-19",
+      "priority": "High",
+      "category": "Work",
+      "completed": false
+    },
+    {
+      "id": "10",
+      "task": "Organize home office desk",
+      "due_date": "2026-01-22",
+      "priority": "Low",
+      "category": "Personal",
+      "completed": true
+    },
+    {
+      "id": "11",
+      "task": "Review insurance policy renewal",
+      "due_date": "2026-01-25",
+      "priority": "Medium",
+      "category": "Finance",
+      "completed": false
+    },
+    {
+      "id": "12",
+      "task": "Purchase birthday gift for Mom",
+      "due_date": "2026-01-28",
+      "priority": "High",
+      "category": "Personal",
+      "completed": false
+    },
+    {
+      "id": "13",
+      "task": "Clean out refrigerator",
+      "due_date": "2026-01-13",
+      "priority": "Low",
+      "category": "Home",
+      "completed": true
+    },
+    {
+      "id": "14",
+      "task": "Read two chapters of 'Clean Code'",
+      "due_date": "2026-01-14",
+      "priority": "Medium",
+      "category": "Education",
+      "completed": false
+    },
+    {
+      "id": "15",
+      "task": "Back up cloud storage photos",
+      "due_date": "2026-01-30",
+      "priority": "Low",
+      "category": "Digital",
+      "completed": false
+    },
+    {
+      "id": "16",
+      "task": "Call internet provider about speed issues",
+      "due_date": "2026-01-16",
+      "priority": "Medium",
+      "category": "Utilities",
+      "completed": false
+    },
+    {
+      "id": "17",
+      "task": "Draft Q1 project roadmap",
+      "due_date": "2026-01-21",
+      "priority": "High",
+      "category": "Work",
+      "completed": false
+    },
+    {
+      "id": "18",
+      "task": "Water indoor plants",
+      "due_date": "2026-01-12",
+      "priority": "Low",
+      "category": "Home",
+      "completed": false
+    },
+    {
+      "id": "19",
+      "task": "Submit expense report for conference",
+      "due_date": "2026-01-15",
+      "priority": "High",
+      "category": "Finance",
+      "completed": true
+    },
+    {
+      "id": "20",
+      "task": "Pick up dry cleaning",
+      "due_date": "2026-01-17",
+      "priority": "Low",
+      "category": "Personal",
+      "completed": false
+    },
+    {
+      "id": "21",
+      "task": "Update LinkedIn profile summary",
+      "due_date": "2026-01-24",
+      "priority": "Medium",
+      "category": "Work",
+      "completed": false
+    },
+    {
+      "id": "22",
+      "task": "Research new ergonomic chair",
+      "due_date": "2026-02-05",
+      "priority": "Low",
+      "category": "Work",
+      "completed": false
+    },
+    {
+      "id": "23",
+      "task": "Pay monthly electricity bill",
+      "due_date": "2026-01-11",
+      "priority": "High",
+      "category": "Finance",
+      "completed": true
+    },
+    {
+      "id": "24",
+      "task": "Volunteer at local food bank",
+      "due_date": "2026-01-31",
+      "priority": "Medium",
+      "category": "Community",
+      "completed": false
+    },
+    {
+      "id": "25",
+      "task": "Complete React Advanced Course Module 3",
+      "due_date": "2026-01-23",
+      "priority": "Medium",
+      "category": "Education",
+      "completed": false
+    },
+    {
+      "id": "26",
+      "task": "Schedule 1-on-1 with manager",
+      "due_date": "2026-01-13",
+      "priority": "High",
+      "category": "Work",
+      "completed": false
+    },
+    {
+      "id": "27",
+      "task": "Go for a 5km run",
+      "due_date": "2026-01-12",
+      "priority": "Medium",
+      "category": "Health",
+      "completed": false
+    },
+    {
+      "id": "28",
+      "task": "Fix leaking faucet in bathroom",
+      "due_date": "2026-01-20",
+      "priority": "Medium",
+      "category": "Home",
+      "completed": false
+    },
+    {
+      "id": "29",
+      "task": "Donate old clothes to charity",
+      "due_date": "2026-01-26",
+      "priority": "Low",
+      "category": "Personal",
       "completed": false
     }
   ]

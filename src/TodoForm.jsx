@@ -25,7 +25,7 @@ export default function TodoForm() {
 
     const newTodo = {
       task,
-      due_date: new Date().toISOString(),
+      due_date: new Date().toISOString().split("T")[0],
       priority: priority,
       category: "Generals",
       completed: false,
